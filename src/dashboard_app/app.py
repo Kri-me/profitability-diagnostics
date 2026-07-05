@@ -424,19 +424,14 @@ with tab1:
 
 
 # ───────────────────────────────────────────────────────────────────────────────
-# TAB 2 — INVESTIGATION
-# Stakeholder diagnostics → driver validation
+# TAB 2 — DIAGNOSTICS
+# Four leaks, in order of magnitude
 # ───────────────────────────────────────────────────────────────────────────────
 
 with tab2:
 
     # ─── LEAK 1: Discount bands ───────────────────────────────────────────────
 
-    st.markdown('''
-<div style="border-left:3px solid #3b82f6; padding:0.3rem 0.8rem; margin-bottom:1rem">
-<span style="color:#3b82f6; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.15em; font-weight:600">Finance diagnostics</span><br>
-<span style="color:#8a8f9e; font-size:0.8rem">Margin erosion · Discount cannibalization · Pricing integrity</span>
-</div>''', unsafe_allow_html=True)
     section("Finance — Pricing integrity")
     st.markdown("## Discount cannibalization")
     callout(
@@ -483,11 +478,6 @@ with tab2:
 
     # ─── LEAK 2: Channel LTV/CAC ──────────────────────────────────────────────
 
-    st.markdown('''
-<div style="border-left:3px solid #8b5cf6; padding:0.3rem 0.8rem; margin-bottom:1rem">
-<span style="color:#8b5cf6; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.15em; font-weight:600">Marketing diagnostics</span><br>
-<span style="color:#8a8f9e; font-size:0.8rem">LTV:CAC · Channel efficiency · Acquisition cost quality</span>
-</div>''', unsafe_allow_html=True)
     section("Marketing — Acquisition efficiency")
     st.markdown("## Channel LTV vs CAC")
     callout(
@@ -540,11 +530,6 @@ with tab2:
 
     # ─── LEAK 3: Shipping deficit ─────────────────────────────────────────────
 
-    st.markdown('''
-<div style="border-left:3px solid #10b981; padding:0.3rem 0.8rem; margin-bottom:1rem">
-<span style="color:#10b981; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.15em; font-weight:600">Operations diagnostics</span><br>
-<span style="color:#8a8f9e; font-size:0.8rem">Shipping subsidies · Return economics · Fulfillment costs</span>
-</div>''', unsafe_allow_html=True)
     section("Operations — Fulfillment economics")
     st.markdown("## Shipping deficit by region")
     callout(
@@ -557,25 +542,16 @@ with tab2:
     df_s = SHIPPING_REGIONS if not _DATA_LIVE else load_logistics_by_region_discount()
 
     fig = go.Figure()
-
-    fig.add_trace(
-        go.Bar(
-            name="Charged to customer ($K)",
-            x=df_s["state_region"],
-            y=df_s["avg_shipping_fee_charged"],
-            marker_color=GREEN,
-            opacity=0.8,
-         )
-     )
-    fig.add_trace(
-        go.Bar(
-            name="Actual shipping cost ($K)",
-            x=df_s["state_region"],
-            y=df_s["avg_actual_shipping_cost"],
-            marker_color=RED,
-            opacity=0.75,
-        )
-    )
+    fig.add_trace(go.Bar(
+        name="Charged to customer ($K)",
+        x=df_s["state_region"], y=df_s["avg_shipping_fee_charged"],
+        marker_color=GREEN, opacity=0.8,
+    ))
+    fig.add_trace(go.Bar(
+        name="Actual shipping cost ($K)",
+        x=df_s["state_region"], y=df_s["avg_actual_shipping_cost"],
+        marker_color=RED, opacity=0.75,
+    ))
     layout = _base_layout("Shipping charged vs actual cost by region ($K)", height=300)
     layout["barmode"] = "group"
     layout["yaxis"]["title"] = "$K"
@@ -657,11 +633,6 @@ with tab2:
     # ─── ML driver chart ──────────────────────────────────────────────────────
 
     st.markdown("<hr>", unsafe_allow_html=True)
-    st.markdown('''
-<div style="border-left:3px solid #f59e0b; padding:0.3rem 0.8rem; margin-bottom:1rem">
-<span style="color:#f59e0b; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.15em; font-weight:600">Driver analysis</span><br>
-<span style="color:#8a8f9e; font-size:0.8rem">Regression · Feature importance · Statistical confirmation of descriptive findings</span>
-</div>''', unsafe_allow_html=True)
     section("Analytics — Driver validation")
     st.markdown("## Feature importance confirms the story")
     callout(
@@ -707,7 +678,7 @@ with tab2:
 
 
 # ───────────────────────────────────────────────────────────────────────────────
-# TAB 3 — DECISION LAB
+# TAB 3 — SCENARIO LAB
 # ───────────────────────────────────────────────────────────────────────────────
 
 with tab3:
@@ -727,7 +698,10 @@ with tab3:
 
     _can_run = False
     try:
-        from src.simulations.simulate import run_scenario, ScenarioConfig
+        from src.simulations.simulate import (
+            run_scenario, ScenarioConfig,
+            apply_discount_cap, apply_marketing_shift,
+        )
         _can_run = True
     except ImportError:
         pass
@@ -746,57 +720,74 @@ with tab3:
             help="% of current Paid Social spend reallocated to higher-LTV channels.",
         )
 
-    # ── Run custom scenario against live engine ───────────────────────────────
+    # ── Run custom scenario — session only, never persisted ──────────────────
     if _can_run:
         if st.button("▶ Run this scenario", type="primary"):
-            _custom_name = f"custom_{discount_cap}cap_{paid_social_shift}shift"
-            _custom_cfg  = ScenarioConfig(
-                discount_cap=discount_cap / 100,
-                marketing_shift_pct=paid_social_shift / 100,
-            )
             with st.spinner("Running against live data..."):
                 try:
-                    _result = run_scenario(_custom_cfg, _custom_name)
-                    _dp = _result.delta["profit"]
-                    _dr = _result.delta["revenue"]
-                    _bp = _result.baseline["profit"]
-                    _br = _result.baseline["revenue"]
-                    _sp = _result.simulated["profit"]
-                    _sr = _result.simulated["revenue"]
+                    from src.data_loaders import load_order_profit_raw
+                    _df = load_order_profit_raw()
+                    _bp = float(_df["net_operating_profit"].sum())
+                    _br = float(_df["net_revenue"].sum())
+                    _df = apply_discount_cap(_df, discount_cap / 100)
+                    if paid_social_shift > 0:
+                        _df = apply_marketing_shift(_df, paid_social_shift / 100)
+                    _sp = float(_df["net_operating_profit"].sum())
+                    _sr = float(_df["net_revenue"].sum())
+                    _dp = _sp - _bp
                     _dm = ((_sp / _sr) - (_bp / _br)) * 100 if _sr and _br else 0
-                    st.cache_data.clear()
-                    # show live result metrics immediately
-                    section("Actual result — live simulation")
-                    r1, r2, r3 = st.columns(3)
-                    r1.metric("Profit Recovery", f"${_dp:,.0f}")
-                    r2.metric("Margin Lift", f"+{_dm:.2f} pts")
-                    r3.metric("Primary Lever",
-                              "Discount cap" if discount_cap < 20 else "Channel shift")
-                    callout(
-                        f"A <strong>{discount_cap}% discount cap</strong> + "
-                        f"<strong>{paid_social_shift}% Paid Social reallocation</strong> "
-                        f"recovers <strong>${_dp:,.0f}</strong> in profit and lifts net margin "
-                        f"by <strong>{_dm:.2f} pts</strong>. "
-                        "No revenue increase required — purely a unit economics correction."
-                    )
+                    # store in session — not saved to disk
+                    st.session_state["custom_result"] = {
+                        "discount_cap": discount_cap,
+                        "paid_social_shift": paid_social_shift,
+                        "delta_profit": _dp,
+                        "delta_margin": _dm,
+                    }
                 except Exception as _e:
                     st.error(f"Simulation failed: {_e}")
     else:
         st.caption("Simulation engine unavailable — connect database to run live scenarios.")
 
+    # Show custom result if one exists in this session
+    if "custom_result" in st.session_state:
+        _r = st.session_state["custom_result"]
+        section("Actual result — live simulation")
+        r1, r2, r3 = st.columns(3)
+        r1.metric("Profit Recovery", f"${_r['delta_profit']:,.0f}")
+        r2.metric("Margin Lift", f"+{_r['delta_margin']:.2f} pts")
+        r3.metric("Primary Lever",
+                  "Discount cap" if _r["discount_cap"] < 20 else "Channel shift")
+        callout(
+            f"A <strong>{_r['discount_cap']}% discount cap</strong> + "
+            f"<strong>{_r['paid_social_shift']}% Paid Social reallocation</strong> "
+            f"recovers <strong>${_r['delta_profit']:,.0f}</strong> in profit and lifts "
+            f"net margin by <strong>{_r['delta_margin']:.2f} pts</strong>. "
+            "No revenue increase required — purely a unit economics correction."
+        )
+
     st.markdown("<hr>", unsafe_allow_html=True)
 
-    # ── All scenarios results ──
-    section("All tested scenarios")
-    st.markdown("## Scenario comparison")
+    # ── Canonical scenario comparison — preset results only ───────────────────
+    section("Canonical scenario comparison")
+    st.markdown("## Preset scenarios")
 
-    # Preset run button — runs the three canonical scenarios
+    # Only these three names ever appear in the comparison table
+    _PRESET_NAMES = {
+        "conservative_15cap_50shift",
+        "balanced_9cap_35shift",
+        "aggressive_8cap_50shift",
+    }
+
     if _can_run:
-        if st.button("▶ Run all preset scenarios", help="Runs conservative, balanced, and aggressive scenarios"):
+        if st.button("▶ Run all preset scenarios",
+                     help="Runs the three canonical scenarios and saves results"):
             _presets = [
-                ("conservative_15cap_50shift", ScenarioConfig(discount_cap=0.15, marketing_shift_pct=0.50)),
-                ("balanced_9cap_35shift",      ScenarioConfig(discount_cap=0.09, marketing_shift_pct=0.35)),
-                ("aggressive_8cap_50shift",    ScenarioConfig(discount_cap=0.08, marketing_shift_pct=0.50)),
+                ("conservative_15cap_50shift",
+                 ScenarioConfig(discount_cap=0.15, marketing_shift_pct=0.50)),
+                ("balanced_9cap_35shift",
+                 ScenarioConfig(discount_cap=0.09, marketing_shift_pct=0.35)),
+                ("aggressive_8cap_50shift",
+                 ScenarioConfig(discount_cap=0.08, marketing_shift_pct=0.50)),
             ]
             with st.spinner("Running 3 preset scenarios..."):
                 _errors = []
@@ -812,19 +803,19 @@ with tab3:
                 st.cache_data.clear()
                 st.rerun()
 
+    # Load only the three canonical preset JSONs — visitors' runs never appear here
     df_sc = SCENARIOS
     if _SIM_LIVE:
         live = compare_scenarios()
         if not live.empty:
-            # filter out zero-delta runs (blank/baseline-only saves)
-            live = live[live["delta_profit"].abs() > 1.0]
-        if not live.empty:
-            if {"name", "delta_profit"}.issubset(live.columns):
-                df_sc = live
+            live = live[live["delta_profit"].abs() > 1.0]  # drop zero-delta blanks
+            if "name" in live.columns:
+                live = live[live["name"].isin(_PRESET_NAMES)]  # preset names only
+        if not live.empty and {"name", "delta_profit"}.issubset(live.columns):
+            df_sc = live
 
-    # Determine which optional columns are present
-    _profit_col  = "delta_profit"  if "delta_profit"       in df_sc.columns else df_sc.columns[2]
-    _name_col    = "name"          if "name"               in df_sc.columns else df_sc.columns[1]
+    _profit_col = "delta_profit" if "delta_profit" in df_sc.columns else df_sc.columns[2]
+    _name_col   = "name"         if "name"          in df_sc.columns else df_sc.columns[1]
 
     fig = go.Figure(go.Bar(
         x=df_sc[_name_col],
@@ -840,15 +831,14 @@ with tab3:
     fig.update_layout(**layout)
     st.plotly_chart(fig, use_container_width=True)
 
-    # Build display table from whatever columns exist
     _display_cols = {
-        "rank":                "#",
-        "name":                "Scenario",
-        "discount_cap_pct":    "Discount Cap %",
+        "rank":                  "#",
+        "name":                  "Scenario",
+        "discount_cap_pct":      "Discount Cap %",
         "paid_social_shift_pct": "Paid Social Shift %",
-        "delta_profit":        "Profit Recovery ($)",
-        "delta_margin_pts":    "Margin Lift (pts)",
-        "score":               "Score",
+        "delta_profit":          "Profit Recovery ($)",
+        "delta_margin_pts":      "Margin Lift (pts)",
+        "score":                 "Score",
     }
     _available = {k: v for k, v in _display_cols.items() if k in df_sc.columns}
     st.dataframe(
