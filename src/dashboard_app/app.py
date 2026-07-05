@@ -556,14 +556,6 @@ with tab2:
 
     df_s = SHIPPING_REGIONS if not _DATA_LIVE else load_logistics_by_region_discount()
 
-    st.write("Shape:", df_s.shape)
-    st.write("Columns:", df_s.columns.tolist())
-    st.write(df_s.head())
-
-    if "state_region" not in df_s.columns:
-        st.error("state_region column missing")
-        st.stop()
-
     fig = go.Figure()
 
     fig.add_trace(
