@@ -556,22 +556,25 @@ with tab2:
 
     df_s = SHIPPING_REGIONS if not _DATA_LIVE else load_logistics_by_region_discount()
 
-    st.write("Shape:", df_s.shape)
-    st.write("Columns:", df_s.columns.tolist())
-    st.write(df_s.head())
+     st.write("Shape:", df_s.shape)
+     st.write("Columns:", df_s.columns.tolist())
+     st.write(df_s.head())
 
-    fig = go.Figure()
+     if "state_region" not in df_s.columns:
+         st.error("state_region column missing")
+         st.stop()
 
-    fig.add_trace(
-        go.Bar(
+     fig = go.Figure()
+
+     fig.add_trace(
+         go.Bar(
             name="Charged to customer ($K)",
             x=df_s["state_region"],
             y=df_s["avg_shipping_fee_charged"],
             marker_color=GREEN,
             opacity=0.8,
-        )
-    )
-
+         )
+     )
     fig.add_trace(
         go.Bar(
             name="Actual shipping cost ($K)",
