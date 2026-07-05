@@ -736,32 +736,34 @@ with tab3:
                     _sr = float(_df["net_revenue"].sum())
                     _dp = _sp - _bp
                     _dm = ((_sp / _sr) - (_bp / _br)) * 100 if _sr and _br else 0
-                    # store in session — not saved to disk
-                    st.session_state["custom_result"] = {
+                    # accumulate in session list — not saved to disk
+                    if "custom_results" not in st.session_state:
+                        st.session_state["custom_results"] = []
+                    st.session_state["custom_results"].append({
                         "discount_cap": discount_cap,
                         "paid_social_shift": paid_social_shift,
                         "delta_profit": _dp,
                         "delta_margin": _dm,
-                    }
+                    })
                 except Exception as _e:
                     st.error(f"Simulation failed: {_e}")
     else:
         st.caption("Simulation engine unavailable — connect database to run live scenarios.")
 
-    # Show quick summary if custom result exists in this session
-    if "custom_result" in st.session_state:
-        _r = st.session_state["custom_result"]
+    # Show summary of all custom runs this session
+    if st.session_state.get("custom_results"):
+        _latest = st.session_state["custom_results"][-1]
         callout(
-            f"Custom scenario computed: <strong>{_r['discount_cap']}% discount cap</strong> + "
-            f"<strong>{_r['paid_social_shift']}% Paid Social reallocation</strong> → "
-            f"<strong>${_r['delta_profit']:,.0f}</strong> profit recovery, "
-            f"<strong>+{_r['delta_margin']:.2f} pts</strong> margin lift. "
-            "See how it compares to the presets below."
+            f"Latest custom scenario: <strong>{_latest['discount_cap']}% discount cap</strong> + "
+            f"<strong>{_latest['paid_social_shift']}% Paid Social reallocation</strong> → "
+            f"<strong>${_latest['delta_profit']:,.0f}</strong> profit recovery, "
+            f"<strong>+{_latest['delta_margin']:.2f} pts</strong> margin lift. "
+            "See how it stacks up against the presets below."
         )
 
     st.markdown("<hr>", unsafe_allow_html=True)
 
-    # ── Scenario comparison — presets + session custom run ────────────────────
+    # ── Scenario comparison — presets + all session custom runs ──────────────
     section("Scenario comparison")
     st.markdown("## All scenarios")
 
@@ -796,7 +798,7 @@ with tab3:
                 st.cache_data.clear()
                 st.rerun()
 
-    # ── Build comparison DataFrame: presets + optional session custom row ─────
+    # ── Build comparison DataFrame: presets + all session custom rows ─────────
     df_sc = SCENARIOS
     if _SIM_LIVE:
         live = compare_scenarios()
@@ -807,32 +809,40 @@ with tab3:
         if not live.empty and {"name", "delta_profit"}.issubset(live.columns):
             df_sc = live
 
-    # Append custom run row from session state (not persisted)
-    if "custom_result" in st.session_state:
-        _r = st.session_state["custom_result"]
-        _custom_row = pd.DataFrame([{
-            "rank":                  0,
-            "name":                  f"Custom ({_r['discount_cap']}% cap · {_r['paid_social_shift']}% shift)",
-            "discount_cap_pct":      _r["discount_cap"],
-            "paid_social_shift_pct": _r["paid_social_shift"],
-            "delta_profit":          _r["delta_profit"],
-            "delta_margin_pts":      _r["delta_margin"],
-            "score":                 None,
-        }])
-        df_sc = pd.concat([_custom_row, df_sc], ignore_index=True)
+    # Append every custom run from this session (stored as a list)
+    if st.session_state.get("custom_results"):
+        _custom_rows = []
+        for _i, _r in enumerate(st.session_state["custom_results"], start=1):
+            _custom_rows.append({
+                "rank":                  f"C{_i}",
+                "name":                  f"Custom {_i} ({_r['discount_cap']}% cap · {_r['paid_social_shift']}% shift)",
+                "discount_cap_pct":      _r["discount_cap"],
+                "paid_social_shift_pct": _r["paid_social_shift"],
+                "delta_profit":          _r["delta_profit"],
+                "delta_margin_pts":      _r["delta_margin"],
+                "score":                 None,
+                "_is_custom":            True,
+            })
+        _custom_df = pd.DataFrame(_custom_rows)
+        df_sc["_is_custom"] = False
+        df_sc = pd.concat([df_sc, _custom_df], ignore_index=True)
 
     _profit_col = "delta_profit" if "delta_profit" in df_sc.columns else df_sc.columns[2]
     _name_col   = "name"         if "name"          in df_sc.columns else df_sc.columns[1]
 
-    # Custom row gets a distinct highlight colour, presets use standard palette
-    _bar_colors = []
-    for n in df_sc[_name_col]:
-        if "Custom" in str(n):
-            _bar_colors.append("#f59e0b")   # amber — visually distinct from presets
-        elif df_sc[_name_col].tolist().index(n) == (1 if "Custom" in str(df_sc[_name_col].iloc[0]) else 0):
-            _bar_colors.append(ACCENT)      # top preset in orange
+    # Distinct colour per bar — presets get a fixed palette, customs cycle through blues
+    _PRESET_COLORS  = [ACCENT, "#6366f1", "#10b981"]   # orange, indigo, emerald
+    _CUSTOM_COLORS  = ["#f59e0b", "#ec4899", "#06b6d4", "#a78bfa", "#84cc16"]  # amber, pink, cyan, violet, lime
+    _preset_idx  = 0
+    _custom_idx  = 0
+    _bar_colors  = []
+    for _, _row in df_sc.iterrows():
+        if _row.get("_is_custom", False):
+            _bar_colors.append(_CUSTOM_COLORS[_custom_idx % len(_CUSTOM_COLORS)])
+            _custom_idx += 1
         else:
-            _bar_colors.append(GREY_LINE)
+            _bar_colors.append(_PRESET_COLORS[_preset_idx % len(_PRESET_COLORS)])
+            _preset_idx += 1
 
     fig = go.Figure(go.Bar(
         x=df_sc[_name_col],
@@ -842,12 +852,14 @@ with tab3:
         textposition="outside",
         textfont=dict(size=11, color=TEXT_MAIN),
     ))
-    layout = _base_layout("Profit recovery by scenario ($)", height=320)
+    layout = _base_layout("Profit recovery by scenario ($)", height=340)
     layout["yaxis"]["title"] = "Additional profit ($)"
-    layout["yaxis"]["range"] = [0, int(df_sc[_profit_col].max() * 1.3)]
+    layout["yaxis"]["range"] = [0, int(df_sc[_profit_col].max() * 1.35)]
     fig.update_layout(**layout)
     st.plotly_chart(fig, use_container_width=True)
 
+    # Drop internal helper column before display
+    _display_df = df_sc.drop(columns=["_is_custom"], errors="ignore")
     _display_cols = {
         "rank":                  "#",
         "name":                  "Scenario",
@@ -857,9 +869,9 @@ with tab3:
         "delta_margin_pts":      "Margin Lift (pts)",
         "score":                 "Score",
     }
-    _available = {k: v for k, v in _display_cols.items() if k in df_sc.columns}
+    _available = {k: v for k, v in _display_cols.items() if k in _display_df.columns}
     st.dataframe(
-        df_sc[list(_available.keys())].rename(columns=_available),
+        _display_df[list(_available.keys())].rename(columns=_available),
         use_container_width=True,
         hide_index=True,
     )
