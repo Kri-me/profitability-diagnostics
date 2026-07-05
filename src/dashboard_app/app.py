@@ -560,14 +560,14 @@ with tab2:
     st.write("Columns:", df_s.columns.tolist())
     st.write(df_s.head())
 
-     if "state_region" not in df_s.columns:
-         st.error("state_region column missing")
-         st.stop()
+    if "state_region" not in df_s.columns:
+        st.error("state_region column missing")
+        st.stop()
 
-     fig = go.Figure()
+    fig = go.Figure()
 
-     fig.add_trace(
-         go.Bar(
+    fig.add_trace(
+        go.Bar(
             name="Charged to customer ($K)",
             x=df_s["state_region"],
             y=df_s["avg_shipping_fee_charged"],
