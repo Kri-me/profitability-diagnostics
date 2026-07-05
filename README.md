@@ -58,8 +58,6 @@ profitability diagnostics/
 │   └── simulation_results/       # Saved scenario JSONs
 │
 └── docs/
-    ├── investigation_blueprint.md   # Business framing, hypotheses, investigation plan
-    ├── system_guide.md              # Architecture, setup, design decisions
     └── 03_executive_summary.md      # Full findings and recommendations
 ```
 
