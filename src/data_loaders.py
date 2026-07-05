@@ -87,8 +87,8 @@ def run_query(sql: str, cache_key: str) -> pd.DataFrame:
         return df
 
     except Exception as e:
-    print(e)
-    raise
+        print(e)
+        raise
 
 # =========================================================
 # PUBLIC LOADERS
