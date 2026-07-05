@@ -560,6 +560,8 @@ with tab2:
     fig.add_trace(go.Bar(
         name="Charged to customer ($K)",
         x=df_s["state_region"], y=df_s["avg_shipping_fee_charged"],
+        st.write(df_s.columns.tolist())
+        st.write(df_s.head())
         marker_color=GREEN, opacity=0.8,
     ))
     fig.add_trace(go.Bar(
