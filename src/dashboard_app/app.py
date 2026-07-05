@@ -748,30 +748,23 @@ with tab3:
     else:
         st.caption("Simulation engine unavailable — connect database to run live scenarios.")
 
-    # Show custom result if one exists in this session
+    # Show quick summary if custom result exists in this session
     if "custom_result" in st.session_state:
         _r = st.session_state["custom_result"]
-        section("Actual result — live simulation")
-        r1, r2, r3 = st.columns(3)
-        r1.metric("Profit Recovery", f"${_r['delta_profit']:,.0f}")
-        r2.metric("Margin Lift", f"+{_r['delta_margin']:.2f} pts")
-        r3.metric("Primary Lever",
-                  "Discount cap" if _r["discount_cap"] < 20 else "Channel shift")
         callout(
-            f"A <strong>{_r['discount_cap']}% discount cap</strong> + "
-            f"<strong>{_r['paid_social_shift']}% Paid Social reallocation</strong> "
-            f"recovers <strong>${_r['delta_profit']:,.0f}</strong> in profit and lifts "
-            f"net margin by <strong>{_r['delta_margin']:.2f} pts</strong>. "
-            "No revenue increase required — purely a unit economics correction."
+            f"Custom scenario computed: <strong>{_r['discount_cap']}% discount cap</strong> + "
+            f"<strong>{_r['paid_social_shift']}% Paid Social reallocation</strong> → "
+            f"<strong>${_r['delta_profit']:,.0f}</strong> profit recovery, "
+            f"<strong>+{_r['delta_margin']:.2f} pts</strong> margin lift. "
+            "See how it compares to the presets below."
         )
 
     st.markdown("<hr>", unsafe_allow_html=True)
 
-    # ── Canonical scenario comparison — preset results only ───────────────────
-    section("Canonical scenario comparison")
-    st.markdown("## Preset scenarios")
+    # ── Scenario comparison — presets + session custom run ────────────────────
+    section("Scenario comparison")
+    st.markdown("## All scenarios")
 
-    # Only these three names ever appear in the comparison table
     _PRESET_NAMES = {
         "conservative_15cap_50shift",
         "balanced_9cap_35shift",
@@ -803,31 +796,55 @@ with tab3:
                 st.cache_data.clear()
                 st.rerun()
 
-    # Load only the three canonical preset JSONs — visitors' runs never appear here
+    # ── Build comparison DataFrame: presets + optional session custom row ─────
     df_sc = SCENARIOS
     if _SIM_LIVE:
         live = compare_scenarios()
         if not live.empty:
-            live = live[live["delta_profit"].abs() > 1.0]  # drop zero-delta blanks
+            live = live[live["delta_profit"].abs() > 1.0]
             if "name" in live.columns:
-                live = live[live["name"].isin(_PRESET_NAMES)]  # preset names only
+                live = live[live["name"].isin(_PRESET_NAMES)]
         if not live.empty and {"name", "delta_profit"}.issubset(live.columns):
             df_sc = live
+
+    # Append custom run row from session state (not persisted)
+    if "custom_result" in st.session_state:
+        _r = st.session_state["custom_result"]
+        _custom_row = pd.DataFrame([{
+            "rank":                  0,
+            "name":                  f"Custom ({_r['discount_cap']}% cap · {_r['paid_social_shift']}% shift)",
+            "discount_cap_pct":      _r["discount_cap"],
+            "paid_social_shift_pct": _r["paid_social_shift"],
+            "delta_profit":          _r["delta_profit"],
+            "delta_margin_pts":      _r["delta_margin"],
+            "score":                 None,
+        }])
+        df_sc = pd.concat([_custom_row, df_sc], ignore_index=True)
 
     _profit_col = "delta_profit" if "delta_profit" in df_sc.columns else df_sc.columns[2]
     _name_col   = "name"         if "name"          in df_sc.columns else df_sc.columns[1]
 
+    # Custom row gets a distinct highlight colour, presets use standard palette
+    _bar_colors = []
+    for n in df_sc[_name_col]:
+        if "Custom" in str(n):
+            _bar_colors.append("#f59e0b")   # amber — visually distinct from presets
+        elif df_sc[_name_col].tolist().index(n) == (1 if "Custom" in str(df_sc[_name_col].iloc[0]) else 0):
+            _bar_colors.append(ACCENT)      # top preset in orange
+        else:
+            _bar_colors.append(GREY_LINE)
+
     fig = go.Figure(go.Bar(
         x=df_sc[_name_col],
         y=df_sc[_profit_col],
-        marker_color=[ACCENT] + [GREY_LINE] * (len(df_sc) - 1),
+        marker_color=_bar_colors,
         text=[f"+${v:,.0f}" for v in df_sc[_profit_col]],
         textposition="outside",
         textfont=dict(size=11, color=TEXT_MAIN),
     ))
-    layout = _base_layout("Profit recovery by scenario ($)", height=300)
+    layout = _base_layout("Profit recovery by scenario ($)", height=320)
     layout["yaxis"]["title"] = "Additional profit ($)"
-    layout["yaxis"]["range"] = [0, int(df_sc[_profit_col].max() * 1.25)]
+    layout["yaxis"]["range"] = [0, int(df_sc[_profit_col].max() * 1.3)]
     fig.update_layout(**layout)
     st.plotly_chart(fig, use_container_width=True)
 
