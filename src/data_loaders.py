@@ -86,10 +86,9 @@ def run_query(sql: str, cache_key: str) -> pd.DataFrame:
         _write_cache_csv(cache_key, df)
         return df
 
-    except Exception:
-        cached = _read_cache_csv(cache_key)
-        return cached if cached is not None else pd.DataFrame()
-
+    except Exception as e:
+    print(e)
+    raise
 
 # =========================================================
 # PUBLIC LOADERS
