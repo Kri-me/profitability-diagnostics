@@ -554,16 +554,14 @@ with tab2:
         "High-discount orders compound this — they often ship free."
     )
 
-    df_s = SHIPPING_REGIONS if not _DATA_LIVE else load_logistics_by_region_discount()
+       df_s = SHIPPING_REGIONS if not _DATA_LIVE else load_logistics_by_region_discount()
 
-    if "state_region" not in df_s.columns:
-    st.error("Unexpected dataframe returned")
-    st.write(df_s.shape)
-    st.write(df_s.columns.tolist())
+    st.write("Shape:", df_s.shape)
+    st.write("Columns:", df_s.columns.tolist())
     st.write(df_s.head())
-    st.stop()
-    
+
     fig = go.Figure()
+
     fig.add_trace(
         go.Bar(
             name="Charged to customer ($K)",
@@ -572,11 +570,17 @@ with tab2:
             marker_color=GREEN,
             opacity=0.8,
         )
-     )
-        name="Actual shipping cost ($K)",
-        x=df_s["state_region"], y=df_s["avg_actual_shipping_cost"],
-        marker_color=RED, opacity=0.75,
-    ))
+    )
+
+    fig.add_trace(
+        go.Bar(
+            name="Actual shipping cost ($K)",
+            x=df_s["state_region"],
+            y=df_s["avg_actual_shipping_cost"],
+            marker_color=RED,
+            opacity=0.75,
+        )
+    )
     layout = _base_layout("Shipping charged vs actual cost by region ($K)", height=300)
     layout["barmode"] = "group"
     layout["yaxis"]["title"] = "$K"
