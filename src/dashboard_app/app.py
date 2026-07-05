@@ -554,7 +554,7 @@ with tab2:
         "High-discount orders compound this — they often ship free."
     )
 
-       df_s = SHIPPING_REGIONS if not _DATA_LIVE else load_logistics_by_region_discount()
+    df_s = SHIPPING_REGIONS if not _DATA_LIVE else load_logistics_by_region_discount()
 
     st.write("Shape:", df_s.shape)
     st.write("Columns:", df_s.columns.tolist())
