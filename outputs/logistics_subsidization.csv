@@ -1,0 +1,5 @@
+state_region,orders,shipping_fee_charged,actual_shipping_cost,shipping_profit,avg_delivery_days,net_margin_pct
+Metro,7457,34508.81,127857.04,-93348.23,2.05,25.28
+Suburban,5621,29451.24,107577.88,-78126.64,3.01,25.64
+Rural,3345,19290.69,85583.05,-66292.36,4.60,23.92
+Remote,1763,11352.67,75953.12,-64600.45,6.47,21.76

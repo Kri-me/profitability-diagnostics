@@ -1,0 +1,5 @@
+acquisition_channel,customers,orders,avg_orders_per_customer,repeat_customer_rate_pct,avg_customer_cac,avg_customer_ltv,avg_ltv_after_customer_cac,ltv_to_cac_ratio
+Paid Social,1353,3044,2.25,51.96,63.48,125.89,62.40,1.98
+Organic,1221,6325,5.18,76.00,8.19,824.50,816.31,100.68
+Email,778,4662,5.99,78.02,18.03,938.46,920.43,52.06
+Referral,648,4155,6.41,76.39,23.91,1027.49,1003.58,42.97

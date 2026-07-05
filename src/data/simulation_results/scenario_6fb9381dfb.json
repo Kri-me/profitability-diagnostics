@@ -1,0 +1,25 @@
+{
+  "scenario_id": "6fb9381dfb",
+  "name": "scenario",
+  "timestamp": "2026-06-23T10:03:13.916080+00:00",
+  "config": {
+    "discount_cap": null,
+    "reclassify_band": null,
+    "reclassify_target": null,
+    "reallocate_from": null,
+    "reallocate_to": null,
+    "reallocate_pct": 0.0
+  },
+  "baseline": {
+    "revenue": 10373847.64,
+    "profit": 2572985.1599999997
+  },
+  "simulated": {
+    "revenue": 10373847.64,
+    "profit": 2572985.1599999997
+  },
+  "delta": {
+    "revenue": 0.0,
+    "profit": 0.0
+  }
+}

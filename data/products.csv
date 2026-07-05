@@ -1,0 +1,121 @@
+product_id,product_name,category,subcategory,unit_cost,standard_retail_price,return_rate_pct,weight_lbs
+1,Budget Electronics SKU 001,Electronics,Budget Electronics,473.85,608.44,0.2076,2.26
+2,Budget Electronics SKU 002,Electronics,Budget Electronics,422.79,590.91,0.1939,7.15
+3,Budget Electronics SKU 003,Electronics,Budget Electronics,53.53,70.21,0.2286,4.72
+4,Budget Electronics SKU 004,Electronics,Budget Electronics,74.87,103.18,0.2335,4.05
+5,Budget Electronics SKU 005,Electronics,Budget Electronics,152.13,193.7,0.1784,7.07
+6,Budget Electronics SKU 006,Electronics,Budget Electronics,193.85,257.35,0.1056,3.34
+7,Budget Electronics SKU 007,Electronics,Budget Electronics,49.09,67.82,0.1071,5.9
+8,Budget Electronics SKU 008,Electronics,Budget Electronics,427.36,555.69,0.1786,2.81
+9,Budget Electronics SKU 009,Electronics,Budget Electronics,88.02,115.93,0.1035,3.6
+10,Budget Electronics SKU 010,Electronics,Budget Electronics,315.82,445.3,0.162,4.91
+11,Premium Electronics SKU 011,Electronics,Premium Electronics,327.18,458.1,0.2186,0.91
+12,Premium Electronics SKU 012,Electronics,Premium Electronics,166.1,224.29,0.1626,5.28
+13,Premium Electronics SKU 013,Electronics,Premium Electronics,230.63,375.63,0.1794,2.25
+14,Premium Electronics SKU 014,Electronics,Premium Electronics,237.74,378.81,0.1704,3.81
+15,Premium Electronics SKU 015,Electronics,Premium Electronics,247.69,374.52,0.1435,6.91
+16,Premium Electronics SKU 016,Electronics,Premium Electronics,140.63,186.49,0.2038,6.82
+17,Premium Electronics SKU 017,Electronics,Premium Electronics,297.94,441.0,0.2365,3.28
+18,Premium Electronics SKU 018,Electronics,Premium Electronics,197.68,302.45,0.1603,4.66
+19,Premium Electronics SKU 019,Electronics,Premium Electronics,452.18,630.44,0.1208,3.68
+20,Premium Electronics SKU 020,Electronics,Premium Electronics,227.28,359.84,0.2337,5.67
+21,Accessories SKU 021,Electronics,Accessories,459.81,642.5,0.1292,2.8
+22,Accessories SKU 022,Electronics,Accessories,381.71,525.47,0.1275,3.59
+23,Accessories SKU 023,Electronics,Accessories,161.4,250.76,0.2246,1.54
+24,Accessories SKU 024,Electronics,Accessories,286.36,384.85,0.131,2.82
+25,Accessories SKU 025,Electronics,Accessories,266.54,403.78,0.19,6.64
+26,Accessories SKU 026,Electronics,Accessories,109.29,174.53,0.1934,1.1
+27,Accessories SKU 027,Electronics,Accessories,201.32,266.65,0.1126,2.63
+28,Accessories SKU 028,Electronics,Accessories,123.91,207.22,0.2251,4.83
+29,Accessories SKU 029,Electronics,Accessories,287.13,495.0,0.1574,4.42
+30,Accessories SKU 030,Electronics,Accessories,265.01,445.92,0.2116,0.98
+31,Everyday Apparel SKU 031,Apparel,Everyday Apparel,81.95,164.03,0.2259,1.19
+32,Everyday Apparel SKU 032,Apparel,Everyday Apparel,83.31,160.78,0.2366,1.49
+33,Everyday Apparel SKU 033,Apparel,Everyday Apparel,20.77,54.64,0.2621,1.25
+34,Everyday Apparel SKU 034,Apparel,Everyday Apparel,14.61,40.68,0.3434,0.54
+35,Everyday Apparel SKU 035,Apparel,Everyday Apparel,60.39,154.3,0.202,1.24
+36,Everyday Apparel SKU 036,Apparel,Everyday Apparel,85.62,190.84,0.3463,0.29
+37,Everyday Apparel SKU 037,Apparel,Everyday Apparel,72.42,204.25,0.2081,0.98
+38,Everyday Apparel SKU 038,Apparel,Everyday Apparel,54.24,146.05,0.2087,0.8
+39,Everyday Apparel SKU 039,Apparel,Everyday Apparel,84.52,180.6,0.2889,1.21
+40,Everyday Apparel SKU 040,Apparel,Everyday Apparel,112.04,214.77,0.3507,1.22
+41,Luxury Apparel SKU 041,Apparel,Luxury Apparel,105.97,201.31,0.363,1.71
+42,Luxury Apparel SKU 042,Apparel,Luxury Apparel,12.38,26.94,0.3565,0.48
+43,Luxury Apparel SKU 043,Apparel,Luxury Apparel,89.52,211.53,0.3303,0.64
+44,Luxury Apparel SKU 044,Apparel,Luxury Apparel,18.81,49.44,0.3581,0.43
+45,Luxury Apparel SKU 045,Apparel,Luxury Apparel,23.27,49.73,0.3445,0.34
+46,Luxury Apparel SKU 046,Apparel,Luxury Apparel,49.39,118.63,0.3528,0.84
+47,Luxury Apparel SKU 047,Apparel,Luxury Apparel,16.83,31.94,0.3032,0.39
+48,Luxury Apparel SKU 048,Apparel,Luxury Apparel,99.82,217.54,0.3006,0.66
+49,Luxury Apparel SKU 049,Apparel,Luxury Apparel,69.46,171.39,0.311,0.24
+50,Luxury Apparel SKU 050,Apparel,Luxury Apparel,79.31,163.87,0.307,0.74
+51,Footwear SKU 051,Apparel,Footwear,70.55,188.33,0.2946,0.89
+52,Footwear SKU 052,Apparel,Footwear,74.11,174.91,0.3226,1.12
+53,Footwear SKU 053,Apparel,Footwear,104.24,211.88,0.2888,1.65
+54,Footwear SKU 054,Apparel,Footwear,71.88,199.31,0.2511,1.46
+55,Footwear SKU 055,Apparel,Footwear,34.28,81.59,0.2132,0.96
+56,Footwear SKU 056,Apparel,Footwear,79.29,204.45,0.2694,0.46
+57,Footwear SKU 057,Apparel,Footwear,53.65,102.72,0.1923,1.83
+58,Footwear SKU 058,Apparel,Footwear,64.3,120.83,0.309,0.33
+59,Footwear SKU 059,Apparel,Footwear,51.53,102.25,0.2096,1.16
+60,Footwear SKU 060,Apparel,Footwear,74.83,165.34,0.3277,1.85
+61,Kitchen SKU 061,Home,Kitchen,159.05,345.76,0.1529,15.15
+62,Kitchen SKU 062,Home,Kitchen,94.49,147.66,0.1327,15.37
+63,Kitchen SKU 063,Home,Kitchen,187.2,351.9,0.143,13.02
+64,Kitchen SKU 064,Home,Kitchen,194.87,291.17,0.106,1.58
+65,Kitchen SKU 065,Home,Kitchen,39.2,70.56,0.0647,16.52
+66,Kitchen SKU 066,Home,Kitchen,108.15,208.38,0.0748,15.41
+67,Kitchen SKU 067,Home,Kitchen,120.81,219.06,0.1248,10.18
+68,Kitchen SKU 068,Home,Kitchen,128.12,251.83,0.1406,6.2
+69,Kitchen SKU 069,Home,Kitchen,233.45,389.99,0.0872,6.29
+70,Kitchen SKU 070,Home,Kitchen,105.05,173.03,0.1444,10.54
+71,Decor SKU 071,Home,Decor,269.26,407.54,0.1214,2.63
+72,Decor SKU 072,Home,Decor,125.29,211.66,0.1281,13.67
+73,Decor SKU 073,Home,Decor,80.49,126.67,0.102,5.11
+74,Decor SKU 074,Home,Decor,165.75,295.5,0.1427,17.68
+75,Decor SKU 075,Home,Decor,84.91,180.57,0.1377,3.54
+76,Decor SKU 076,Home,Decor,203.13,356.83,0.1309,12.94
+77,Decor SKU 077,Home,Decor,189.9,376.1,0.1425,6.46
+78,Decor SKU 078,Home,Decor,216.23,409.66,0.1374,15.6
+79,Decor SKU 079,Home,Decor,49.81,82.66,0.1436,16.67
+80,Decor SKU 080,Home,Decor,185.57,326.1,0.0851,9.93
+81,Furniture SKU 081,Home,Furniture,89.53,187.96,0.1167,7.67
+82,Furniture SKU 082,Home,Furniture,105.58,226.91,0.1213,4.89
+83,Furniture SKU 083,Home,Furniture,130.35,227.53,0.091,13.52
+84,Furniture SKU 084,Home,Furniture,78.37,138.29,0.1041,8.94
+85,Furniture SKU 085,Home,Furniture,132.39,253.21,0.0743,5.9
+86,Furniture SKU 086,Home,Furniture,156.7,332.54,0.0645,2.25
+87,Furniture SKU 087,Home,Furniture,254.85,394.52,0.1579,15.08
+88,Furniture SKU 088,Home,Furniture,53.48,81.47,0.1577,5.33
+89,Furniture SKU 089,Home,Furniture,151.65,242.39,0.1201,15.28
+90,Furniture SKU 090,Home,Furniture,192.69,287.91,0.1195,12.24
+91,Fitness SKU 091,Sports,Fitness,36.2,76.25,0.1127,0.45
+92,Fitness SKU 092,Sports,Fitness,156.67,286.16,0.0732,0.88
+93,Fitness SKU 093,Sports,Fitness,72.31,124.84,0.0798,4.84
+94,Fitness SKU 094,Sports,Fitness,124.41,200.86,0.1208,4.45
+95,Fitness SKU 095,Sports,Fitness,69.04,164.0,0.0783,0.73
+96,Fitness SKU 096,Sports,Fitness,16.17,28.07,0.0998,0.84
+97,Fitness SKU 097,Sports,Fitness,79.01,178.42,0.1297,4.17
+98,Fitness SKU 098,Sports,Fitness,98.95,205.28,0.0994,2.65
+99,Fitness SKU 099,Sports,Fitness,66.39,105.86,0.1062,3.05
+100,Fitness SKU 100,Sports,Fitness,31.35,53.29,0.1287,1.83
+101,Outdoor SKU 101,Sports,Outdoor,85.32,139.2,0.067,4.64
+102,Outdoor SKU 102,Sports,Outdoor,22.6,38.67,0.1481,3.07
+103,Outdoor SKU 103,Sports,Outdoor,95.37,189.74,0.0696,2.47
+104,Outdoor SKU 104,Sports,Outdoor,78.91,132.2,0.0734,3.8
+105,Outdoor SKU 105,Sports,Outdoor,31.25,50.37,0.1073,2.92
+106,Outdoor SKU 106,Sports,Outdoor,123.19,191.34,0.1205,5.16
+107,Outdoor SKU 107,Sports,Outdoor,76.14,166.76,0.09,0.84
+108,Outdoor SKU 108,Sports,Outdoor,68.81,125.71,0.1366,2.27
+109,Outdoor SKU 109,Sports,Outdoor,48.24,108.23,0.0751,4.0
+110,Outdoor SKU 110,Sports,Outdoor,48.06,111.46,0.069,4.45
+111,Team Sports SKU 111,Sports,Team Sports,73.94,174.02,0.1494,4.84
+112,Team Sports SKU 112,Sports,Team Sports,26.55,48.97,0.1355,3.98
+113,Team Sports SKU 113,Sports,Team Sports,124.05,266.11,0.0813,1.49
+114,Team Sports SKU 114,Sports,Team Sports,54.05,110.32,0.0981,0.65
+115,Team Sports SKU 115,Sports,Team Sports,145.79,227.89,0.0909,2.99
+116,Team Sports SKU 116,Sports,Team Sports,99.41,160.85,0.1248,5.16
+117,Team Sports SKU 117,Sports,Team Sports,92.9,215.41,0.0758,1.3
+118,Team Sports SKU 118,Sports,Team Sports,18.8,38.84,0.0662,5.65
+119,Team Sports SKU 119,Sports,Team Sports,87.21,187.54,0.0935,4.52
+120,Team Sports SKU 120,Sports,Team Sports,75.87,144.22,0.1274,1.73

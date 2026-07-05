@@ -1,0 +1,24 @@
+{
+  "scenario_id": "8354abc407",
+  "name": "custom_6cap_35shift",
+  "timestamp": "2026-07-04T08:48:41.979405+00:00",
+  "config": {
+    "discount_cap": 0.06,
+    "reclassify_band": null,
+    "reclassify_target": null,
+    "marketing_shift_pct": 0.35,
+    "shipping_cost_reduction_pct": 0.0
+  },
+  "baseline": {
+    "revenue": 10373847.64,
+    "profit": 2572985.1599999997
+  },
+  "simulated": {
+    "revenue": 11409855.620641,
+    "profit": 3719344.7596409996
+  },
+  "delta": {
+    "revenue": 1036007.980641,
+    "profit": 1146359.599641
+  }
+}

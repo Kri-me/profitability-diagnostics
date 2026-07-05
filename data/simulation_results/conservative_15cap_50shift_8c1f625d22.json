@@ -1,0 +1,24 @@
+{
+  "scenario_id": "8c1f625d22",
+  "name": "conservative_15cap_50shift",
+  "timestamp": "2026-07-04T11:32:27.483580+00:00",
+  "config": {
+    "discount_cap": 0.15,
+    "reclassify_band": null,
+    "reclassify_target": null,
+    "marketing_shift_pct": 0.5,
+    "shipping_cost_reduction_pct": 0.0
+  },
+  "baseline": {
+    "revenue": 10373847.64,
+    "profit": 2572985.1599999997
+  },
+  "simulated": {
+    "revenue": 10873133.862598,
+    "profit": 3229916.5525979996
+  },
+  "delta": {
+    "revenue": 499286.2225979995,
+    "profit": 656931.3925979999
+  }
+}

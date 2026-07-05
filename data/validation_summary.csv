@@ -1,0 +1,2 @@
+customers,products,orders,order_items,fulfillment,marketing_spend,revenue_growth_pct,net_margin_first_3_months_pct,net_margin_last_3_months_pct,worst_discount_band,worst_channel
+4000,120,18186,30271,18186,72,98.71294926910011,26.844538387053746,23.215068937380405,High,Paid Social

@@ -1,0 +1,15 @@
+segment,acquisition_channel,state_region,discount_band,orders,net_revenue,net_operating_profit,net_margin_pct
+Retail,Paid Social,Metro,High,406,183138.14,-14311.39,-7.81
+Retail,Paid Social,Rural,High,197,69098.06,-9874.50,-14.29
+Retail,Paid Social,Suburban,High,246,110226.97,-8626.21,-7.83
+Corporate,Paid Social,Metro,High,128,54099.45,-5941.24,-10.98
+Corporate,Paid Social,Suburban,High,80,33531.93,-3370.76,-10.05
+Retail,Paid Social,Remote,High,53,26647.17,-2703.27,-10.14
+Wholesale,Paid Social,Suburban,High,47,36341.55,-2545.19,-7.00
+Corporate,Paid Social,Rural,High,41,18307.66,-1484.60,-8.11
+Corporate,Paid Social,Remote,High,18,6593.63,-1229.72,-18.65
+Corporate,Referral,Remote,High,44,20340.62,-985.03,-4.84
+Wholesale,Paid Social,Remote,High,9,3797.00,-418.43,-11.02
+Wholesale,Paid Social,Metro,High,46,29847.18,-414.57,-1.39
+Wholesale,Paid Social,Rural,High,24,17612.98,-340.73,-1.93
+Retail,Organic,Remote,High,105,44078.46,-183.23,-0.42
