@@ -2,7 +2,7 @@
 
 An end-to-end profitability investigation for a fictional e-commerce retailer. The central business question:
 
-> Revenue has grown for 18 months. Margins are shrinking. Where is the business leaking value — and what should be done about it?
+> Revenue has grown for 18 months. Margins are shrinking. Where is the business leaking value and what should be done about it?
 
 The project generates synthetic data with intentionally embedded profit leaks, loads it into PostgreSQL, runs structured SQL diagnostics, validates findings with machine learning, simulates policy interventions, and presents the full investigation through a Streamlit dashboard.
 
