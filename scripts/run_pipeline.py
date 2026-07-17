@@ -88,7 +88,7 @@ OUTPUT_DIR.mkdir(exist_ok=True)
 
 
 # -----------------------------
-# FIXED SQL EXECUTION
+# SQL EXECUTION
 # -----------------------------
 def run_sql_file(conn, file_path):
     print(f"Running {file_path}...")
