@@ -1,5 +1,7 @@
 pandas
 numpy
+matplotlib
+seaborn
 sqlalchemy
 psycopg[binary]
 streamlit
